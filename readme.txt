@@ -4,7 +4,7 @@ PPC: A scalable graph clustering algorithm
 
 Based on the article "Personalized PageRank Clustering: A Graph Clustering Algorithm Based on Random Walks"
 Authors: S.A. Tabrizi, A. Shakery, M. Asadpour, M. Abbasi, M.A. Tavallaie
-Version: 1.1
+Version: 1.2
 
 -----------------------------------------------------------------------------
 
@@ -51,3 +51,16 @@ if you like to compile the program manually, here is what you need:
 -DWE -DintWeight		for weighted graphs with integer weights
 
 -----------------------------------------------------------------------------
+
+Change Log:
+Release 1.2:
+	Bug Fixes:
+		Fixed a bug in reading big graph files (more than about 60000 vertices).
+Release 1.1:
+	New Features:
+		Added support for determining the exact number of clusters.
+	Bug Fixes:
+		Fixed some issues.
+Release 1.0
+	
+

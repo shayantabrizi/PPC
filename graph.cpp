@@ -402,7 +402,7 @@ void graph::readFromFile1(string fileName, bool createRandomizedGraph) {
 		baseNodes[(*itr).second].realNumber = (*itr).first;
 	}
 
-	map<int, bool> markEdges1;
+	map<long long, bool> markEdges1;
 	list<unsigned int> *edges1;
 	edges1 = new list<unsigned int>[baseSize];
 #ifdef WE
@@ -416,7 +416,7 @@ void graph::readFromFile1(string fileName, bool createRandomizedGraph) {
 			continue;
 		src = virtualNumbers[src];
 		dst = virtualNumbers[dst];
-		int index = src < dst ? src * baseSize + dst : dst * baseSize + src;
+		long long index = src < dst ? src * baseSize + dst : dst * baseSize + src;
 		if (markEdges1[index]) {
 #ifdef WE
 			list<double>::iterator iter = weight[src].begin();
