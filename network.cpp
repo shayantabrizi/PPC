@@ -167,7 +167,7 @@ void network::partition2(bool testing) {
 	}
 #endif
 	modularityInit(start);
-	for (int j = 1; j < orderIndex; j ++) {
+	for (int j = 1; j < orderIndex - 1; j ++) {
 		updateModularity(order1[j]);
 	}
 	bool check = false;
@@ -253,7 +253,7 @@ int network::getPosition(node* inode){
 void network::modularityInit(node* inode) {
 	inode->group = 1;
 
-	maxModul = 0;
+	maxModul = -1000;
 	maxNode = NULL;
 #ifndef WE
 	inDegree = inode->baseDegree;
@@ -279,6 +279,10 @@ void network::modularityInit(node* inode) {
 	}
 	modularity = -(((double) j) / graph::baseWeights - ((double) (inDegree * inDegree2)) / (2.0 * graph::baseWeights * graph::baseWeights));
 #endif
+        if (modularity > maxModul) {
+                maxModul = modularity;
+                maxNode = inode;
+        }
 }
 
 inline double network::updateModularity(node* inode) {

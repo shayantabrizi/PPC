@@ -4,6 +4,7 @@ PPC: A scalable graph clustering algorithm
 
 Based on the article "Personalized PageRank Clustering: A Graph Clustering Algorithm Based on Random Walks"
 Authors: S.A. Tabrizi, A. Shakery, M. Asadpour, M. Abbasi, M.A. Tavallaie
+Version: 1.1
 
 -----------------------------------------------------------------------------
 
@@ -14,7 +15,7 @@ University	:	University of Tehran, Iran
 -----------------------------------------------------------------------------
 
 Disclaimer:
-This is the first public version of this program and we really appreciate bug reports and any suggestions for improving the algorithm. Please contact us via email at s.tabrizi@ut.ac.ir.
+We really appreciate bug reports and any suggestions for improving the algorithm. Please contact us via email at s.tabrizi@ut.ac.ir.
 
 usage:
 	The second argument is optional and changes the random number generator seed.
@@ -38,7 +39,8 @@ Program automatically generates Datasets/test/test.smg for future use and it mig
     if you have a .smg file, you don't need the .txt file anymore.
 
 if you like to compile the program manually, here is what you need:
--DcompLimit=40				you can set a limit for the number of clusters (Useful for when the number of clusters is known)
+-DcompLimit=40				you can set a limit for the number of clusters
+-DexactClustersCount			using it in conjunction with -DcompLimit produces exactly compLimit clusters (Useful for when the number of clusters is known) (compLimit must be not higher than the number of vertices)
 -DpageRankAlpha=0.7			to change the PageRank alpha value
 -DTRIAL_DEFAULT=50			minimum number of random jumps starting from a vertex
 -DTRIAL_DEFUALT_MULT=10		number of random jumps starting from a vertex = max{TRIAL_DEFUALT_MULT * node's degree, DTRIAL_DEFAULT}

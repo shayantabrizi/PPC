@@ -41,8 +41,14 @@ void clusterer::run() {
 #endif
 	while (true) {
 		vector<network*>::iterator maxModularNetwork;
-		double maxMod = 0;
+		double maxMod = -1000;
 		for (vector<network*>::iterator itr = results.begin(); itr != results.end(); itr++) {
+			if ((*itr)->mainGraph->size==1) {
+				(*itr)->modularity=-1;
+				(*itr)->isClustered=true;
+				continue;
+			}
+
 			if (!(*itr)->isClustered) {
 #ifdef WE
 				(*itr)->mainGraph->newMajmueTajamoei();
@@ -52,12 +58,15 @@ void clusterer::run() {
 				(*itr)->mainGraph->deleteMajmueTajamoei();
 #endif
 			}
+
 			if ((*itr)->modularity > maxMod) {
 				maxMod = (*itr)->modularity;
 				maxModularNetwork = itr;
 			}
 		}
+#ifndef exactClustersCount
 		if (maxMod > 0) {
+#endif
 			maxModularity += maxMod;
 			(*maxModularNetwork)->updateComponents((int)results.size());
 			graph *graph1 = (*maxModularNetwork)->getFirstSubGraph();
@@ -103,10 +112,12 @@ void clusterer::run() {
 			}
 #endif
 		}
+#ifndef exactClustersCount
 		else {
 			break;
 		}
 	}
+#endif
 #ifdef compLimit
 	} else {
 		compNum ++;
