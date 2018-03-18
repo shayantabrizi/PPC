@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <map>
-#include "fibpriv.h"
+#include "fib/fibpriv.h"
 #include <sys/stat.h>
 #include <stdlib.h>
 using namespace std;
@@ -17,10 +17,10 @@ void clusterer::run() {
 	list<graph*> gs;
 	graph *initGraph = graph::initialGraph();
 #ifdef compLimit
-	initGraph->prone(gs, compLimit - 1);
+	initGraph->prune(gs, compLimit - 1);
 	compNum = gs.size();
 #else
-	initGraph->prone(gs, 0);
+	initGraph->prune(gs, 0);
 #endif
 	i = 0;
 	for (list<graph*>::iterator itr = gs.begin(); itr != gs.end(); itr ++) {
@@ -77,12 +77,12 @@ void clusterer::run() {
 			delete((*maxModularNetwork)->mainGraph);
 			delete(*maxModularNetwork);
 #ifdef compLimit
-			graph1->prone(gs, compLimit - compNum - 1);
-			graph2->prone(gs, compLimit - compNum - gs.size());
+			graph1->prune(gs, compLimit - compNum - 1);
+			graph2->prune(gs, compLimit - compNum - gs.size());
 			compNum += gs.size() - 1;
 #else
-			graph1->prone(gs, 0);
-			graph2->prone(gs, 0);
+			graph1->prune(gs, 0);
+			graph2->prune(gs, 0);
 #endif
 			graph2 = gs.back();
 			gs.pop_back();

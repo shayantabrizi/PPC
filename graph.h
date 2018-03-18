@@ -28,7 +28,7 @@ public:
 	unsigned int edgeSize;
 
 	static graph* initialGraph();
-	void prone(list<graph*>&, unsigned int);
+	void prune(list<graph*>&, unsigned int);
 	static graph* createOneNodeGraph(node*);
 
 	void resetNodes();

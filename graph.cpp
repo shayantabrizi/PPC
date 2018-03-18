@@ -85,7 +85,7 @@ void graph::deleteMajmueTajamoei() {
 	}
 }
 #endif
-void graph::prone(list<graph*>& retVal, unsigned int limit) {
+void graph::prune(list<graph*>& retVal, unsigned int limit) {
 	unsigned int i, j;
 #ifdef newpn
 	for (i = 0; i < size; ) {
@@ -195,12 +195,11 @@ void graph::prone(list<graph*>& retVal, unsigned int limit) {
 			graph *nlgraph = new graph(upToNow);
 			j = 0;
 			for ( ; i < size; i ++) {
-				if (nodes[i]->group == 4) {
-					continue;
+				if (nodes[i]->group != 4) {
+					nodes[i]->group = 4;
+					nlgraph->nodes[j] = nodes[i];
+					nlgraph->nodes[j]->virtualNumber = j ++;
 				}
-				nodes[i]->group = 4;
-				nlgraph->nodes[j] = nodes[i];
-				nlgraph->nodes[j]->virtualNumber = j ++;
 			}
 			retVal.push_back(nlgraph);
 			break;
@@ -213,12 +212,11 @@ void graph::prone(list<graph*>& retVal, unsigned int limit) {
 		for (list<node*>::iterator itr = newList.begin(); len > 0; itr ++) {
 			len --;
 			for (j = 0; j < (*itr)->degree; j ++) {
-				if ((*itr)->connectedNodes[j]->group == 4) {
-					continue;
+				if ((*itr)->connectedNodes[j]->group != 4) {
+					(*itr)->connectedNodes[j]->group = 4;
+					newList.push_back((*itr)->connectedNodes[j]);
+					len ++;
 				}
-				(*itr)->connectedNodes[j]->group = 4;
-				newList.push_back((*itr)->connectedNodes[j]);
-				len ++;
 			}
 		}
 		graph *nGraph = new graph(newList.size());
@@ -416,7 +414,7 @@ void graph::readFromFile1(string fileName, bool createRandomizedGraph) {
 			continue;
 		src = virtualNumbers[src];
 		dst = virtualNumbers[dst];
-		long long index = src < dst ? src * baseSize + dst : dst * baseSize + src;
+		long long index = src < dst ? ((long long)src) * baseSize + dst : ((long long)dst) * baseSize + src;
 		if (markEdges1[index]) {
 #ifdef WE
 			list<double>::iterator iter = weight[src].begin();

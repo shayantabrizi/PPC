@@ -1,6 +1,6 @@
 #include "network.h"
 #include "randomNumberGenerator.h"
-#include "fibpriv.h"
+#include "fib/fibpriv.h"
 #include <fstream>
 #include <cmath>
 #include <iostream>
@@ -111,11 +111,9 @@ void network::partition2(bool testing) {
 #ifdef PAPER
 			if (!link->inode1->seed) {
 				link->inode1->score += link->inodeFrequency.frequency;
-				if (link->inode1->fibNode == NULL) {
-					link->inode1->fibNode = fh_insertkey(fh, -link->inode1->score, (void*) link->inode1);
-				} else {
-					fh_replacekey(fh, link->inode1->fibNode, -link->inode1->score);
-				}
+                                if (link->inode1->fibNode != NULL) {
+                                    fh_replacekey(fh, link->inode1->fibNode, -link->inode1->score);
+                                }
 			}
 #else
 			link->inodeFrequency.inode->score += link->inodeFrequency.frequency;
@@ -135,6 +133,14 @@ void network::partition2(bool testing) {
 			link = link->next;
 		}
 #endif
+                for (int j = 0; j < lastSeed->degree; j ++) {
+                    node* n = lastSeed->connectedNodes[j];
+                    if (!n->seed) {
+                            if (n->fibNode == NULL) {
+                                    n->fibNode = fh_insertkey(fh, -n->score, (void*) n);
+                            }
+                    }
+                }
 		if (fh->fh_n > 0) {
 			lastSeed = (node*) fh_extractmin(fh);
 			lastSeed->fibNode = NULL;
@@ -350,7 +356,8 @@ graph* network::createSubGraph(std::vector<node*>& p) {
 			}
 		}
 		nGraph->edgeSize += nGraph->nodes[i]->degree;
-		nGraph->nodes[i]->virtualNumber = i ++;
+		nGraph->nodes[i]->virtualNumber = i;
+		i++;
 	}
 	nGraph->edgeSize /= 2;
 	nGraph->resetNodes();

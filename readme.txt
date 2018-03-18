@@ -4,7 +4,7 @@ PPC: A scalable graph clustering algorithm
 
 Based on the article "Personalized PageRank Clustering: A Graph Clustering Algorithm Based on Random Walks"
 Authors: S.A. Tabrizi, A. Shakery, M. Asadpour, M. Abbasi, M.A. Tavallaie
-Version: 1.2
+Version: 1.3
 
 -----------------------------------------------------------------------------
 
@@ -14,10 +14,14 @@ University	:	University of Tehran, Iran
 
 -----------------------------------------------------------------------------
 
+Please cite:
+Shayan A. Tabrizi, Azadeh Shakery, Masoud Asadpour, Maziar Abbasi, Mohammad Ali Tavallaie, Personalized PageRank Clustering: A graph clustering algorithm based on random walks, Physica A: Statistical Mechanics and its Applications, vol. 392, no. 22, pp. 5772-5785, http://dx.doi.org/10.1016/j.physa.2013.07.021
+
+
 Disclaimer:
 We really appreciate bug reports and any suggestions for improving the algorithm. Please contact us via email at s.tabrizi@ut.ac.ir.
 
-usage:
+Usage:
 	The second argument is optional and changes the random number generator seed.
 
 1) For simple undirected graphs:
@@ -53,6 +57,11 @@ if you like to compile the program manually, here is what you need:
 -----------------------------------------------------------------------------
 
 Change Log:
+Release 1.3:
+	Bug Fixes:
+		Fixed yet another bug in reading big graph files.
+	Improvements:
+		Moving a node from non-seeds to seeds only if it is connected to at least one seed node.
 Release 1.2:
 	Bug Fixes:
 		Fixed a bug in reading big graph files (more than about 60000 vertices).
