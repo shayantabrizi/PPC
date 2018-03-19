@@ -85,39 +85,41 @@ void graph::deleteMajmueTajamoei() {
 	}
 }
 #endif
-void graph::prune(list<graph*>& retVal, unsigned int limit) {
+void graph::prune(list<graph*>& retVal, unsigned int limit, bool swap) {
 	unsigned int i, j;
 #ifdef newpn
-	for (i = 0; i < size; ) {
-		if (nodes[i]->degree == 1 && nodes[i]->connectedNodes[0]->degree == 2) {
-			nodes[i]->component = -1;
-			j = nodes[i]->connectedNodes[0]->virtualNumber;
-			if (nodes[i] == nodes[j]->connectedNodes[0]) {
-				nodes[j]->connectedNodes[0] = nodes[j]->connectedNodes[1];
+	if (swap) {
+		for (i = 0; i < size; ) {
+			if (nodes[i]->degree == 1 && nodes[i]->connectedNodes[0]->degree == 2) {
+				nodes[i]->component = -1;
+				j = nodes[i]->connectedNodes[0]->virtualNumber;
+				if (nodes[i] == nodes[j]->connectedNodes[0]) {
+					nodes[j]->connectedNodes[0] = nodes[j]->connectedNodes[1];
 #ifdef WE
-				nodes[j]->weight[0] = nodes[j]->weight[1];
+					nodes[j]->weight[0] = nodes[j]->weight[1];
 #endif
-			}
-			nodes[j]->degree = 1;
-			sepratedNodes[indexSepratedNodes ++] = nodes[i];
-			size --;
-			if (j > i) {
-				nodes[i] = nodes[j];
-				nodes[i]->virtualNumber = i;
-				nodes[j] = nodes[size];
-				nodes[j]->virtualNumber = j;
+				}
+				nodes[j]->degree = 1;
+				sepratedNodes[indexSepratedNodes ++] = nodes[i];
+				size --;
+				if (j > i) {
+					nodes[i] = nodes[j];
+					nodes[i]->virtualNumber = i;
+					nodes[j] = nodes[size];
+					nodes[j]->virtualNumber = j;
+				} else {
+					nodes[i] = nodes[size];
+					nodes[i]->virtualNumber = i;
+					i --;
+					node *tmp = nodes[j];
+					nodes[j] = nodes[i];
+					nodes[i] = tmp;
+					nodes[i]->virtualNumber = i;
+					nodes[j]->virtualNumber = j;
+				}
 			} else {
-				nodes[i] = nodes[size];
-				nodes[i]->virtualNumber = i;
-				i --;
-				node *tmp = nodes[j];
-				nodes[j] = nodes[i];
-				nodes[i] = tmp;
-				nodes[i]->virtualNumber = i;
-				nodes[j]->virtualNumber = j;
+				i ++;
 			}
-		} else {
-			i ++;
 		}
 	}
 #endif

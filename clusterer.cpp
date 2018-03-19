@@ -17,10 +17,10 @@ void clusterer::run() {
 	list<graph*> gs;
 	graph *initGraph = graph::initialGraph();
 #ifdef compLimit
-	initGraph->prune(gs, compLimit - 1);
+	initGraph->prune(gs, compLimit - 1, true);
 	compNum = gs.size();
 #else
-	initGraph->prune(gs, 0);
+	initGraph->prune(gs, 0, true);
 #endif
 	i = 0;
 	for (list<graph*>::iterator itr = gs.begin(); itr != gs.end(); itr ++) {
@@ -77,12 +77,12 @@ void clusterer::run() {
 			delete((*maxModularNetwork)->mainGraph);
 			delete(*maxModularNetwork);
 #ifdef compLimit
-			graph1->prune(gs, compLimit - compNum - 1);
-			graph2->prune(gs, compLimit - compNum - gs.size());
+			graph1->prune(gs, compLimit - compNum - 1, false);
+			graph2->prune(gs, compLimit - compNum - gs.size(), true);
 			compNum += gs.size() - 1;
 #else
-			graph1->prune(gs, 0);
-			graph2->prune(gs, 0);
+			graph1->prune(gs, 0, false);
+			graph2->prune(gs, 0, true);
 #endif
 			graph2 = gs.back();
 			gs.pop_back();
@@ -93,14 +93,13 @@ void clusterer::run() {
 			(*maxModularNetwork) = ng2;
 			for (list<graph*>::iterator itr = gs.begin(); itr != gs.end(); itr ++) {
 				(*itr)->updateAllComponents((unsigned int) results.size());
-				results.push_back(new network(*itr));
+				network* net = new network(*itr);
+				results.push_back(net);
 #ifdef hier
-				for (i = 0; i < (*itr)->size; i ++) {
-					for (unsigned int j = 0; j < ng2->lvl - 1; j ++) {
-						ss << ":" << graph2->nodes[0]->component;
-					}
-					ss << ":" << (*itr)->nodes[i]->component;
-					(*itr)->nodes[i]->hi += ss.str();
+				net->lvl=i + 1;
+				for (int t = 0; t < (*itr)->size; t ++) {
+					ss << ":" << (*itr)->nodes[t]->component;
+					(*itr)->nodes[t]->hi += ss.str();
 					ss.str("");
 				}
 #endif
